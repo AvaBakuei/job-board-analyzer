@@ -1,9 +1,8 @@
-import spacy
-from spacy.matcher import PhraseMatcher
-from jobs.constants import TECH_TAGS, TECH_SKILLS
+import json
+from ollama import chat
 from collections import Counter
-
-nlp = spacy.load("en_core_web_lg")
+from concurrent.futures import ThreadPoolExecutor
+from jobs.constants import TECH_TAGS
 
 
 def filter_by_city(jobs_list: list, location: str) -> list:
@@ -15,21 +14,31 @@ def filter_by_it_category(jobs_list: list) -> list:
 
 
 def extract_skills(description: str) -> list[str]:
-    description = description.lower()
+    response = chat(model="qwen2.5:7b-instruct", format="json", messages=[{
+        "role": "user",
+        "content": f"""
+            Extract technical skills from the job description, regardless of the language.
 
-    return [
-        skill
-        for skill in TECH_SKILLS
-        if skill in description
-    ]
+            Return a JSON object with this format:
+            {{"skills": ["Python", "React", "Docker"]}}
+
+            Description:
+            {description}
+            """
+    }])
+
+    return json.loads(response.message.content)["skills"]
 
 
 def extract_skills_from_jobs(jobs_list: list) -> list:
     all_skills = []
 
-    for job in jobs_list:
-        skills = extract_skills(job["description"])
-        all_skills.extend(skills)
+    with ThreadPoolExecutor(max_workers=4) as executor:
+        results = executor.map(lambda job: extract_skills(
+            job["description"]), jobs_list)
+
+    for skill in results:
+        all_skills.extend(skill)
 
     return list(set(all_skills))
 
