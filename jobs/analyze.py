@@ -1,10 +1,13 @@
 import os
 import json
+import openai
 from openai import OpenAI
+from json.decoder import JSONDecodeError
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
 from dotenv import load_dotenv
 from jobs.constants import TECH_TAGS
+from jobs.exceptions import handle_openai_error
 
 load_dotenv()
 
@@ -21,17 +24,25 @@ def filter_by_it_category(jobs_list: list) -> list:
 
 
 def extract_skills(description: str) -> list[str]:
-    response = client.responses.create(model="gpt-5.6-luna", input=f"""
-    Extract technical skills from the job description, regardless of the language.
-    
-    Return a JSON object with this format:
-    {{"skills": ["Python", "React", "Docker"]}}
-    
-    Description:
-    {description}
-    """)
+    try:
+        response = client.responses.create(model="gpt-5.6-luna", input=f"""
+            Extract technical skills from the job description, regardless of the language.
 
-    return json.loads(response.output_text)["skills"]
+            Return a JSON object with this format:
+            {{"skills": ["Python", "React", "Docker"]}}
+
+            Description:
+            {description}
+            """)
+
+    except openai.APIError as e:
+        return handle_openai_error(e)
+    else:
+        try:
+            return json.loads(response.output_text)["skills"]
+        except JSONDecodeError as e:
+            print(f"Failed to decode OpenAI response as JSON: {e}")
+            return []
 
 
 def extract_skills_from_jobs(jobs_list: list) -> list[list[str]]:
