@@ -1,8 +1,7 @@
 import os
-import json
 import openai
 from openai import OpenAI
-from json.decoder import JSONDecodeError
+from pydantic import BaseModel
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
 from dotenv import load_dotenv
@@ -15,6 +14,10 @@ load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 
+class Skill(BaseModel):
+    skills: list[str]
+
+
 def filter_by_city(jobs_list: list, location: str) -> list:
     return list(filter(lambda job: location in job["location"], jobs_list))
 
@@ -24,8 +27,9 @@ def filter_by_it_category(jobs_list: list) -> list:
 
 
 def extract_skills(description: str) -> list[str]:
+
     try:
-        response = client.responses.create(model="gpt-5.6-luna", input=f"""
+        response = client.responses.parse(model="gpt-5.6-luna", input=f"""
             Extract technical skills from the job description, regardless of the language of the job description.
 
             Include only specific technologies, tools, programming languages, frameworks, libraries, databases, cloud platforms, or DevOps tools.
@@ -33,21 +37,14 @@ def extract_skills(description: str) -> list[str]:
             Do not include broad technical areas or concepts, human languages, soft skills,
             job responsibilities, job titles, or general business skills.
 
-            Return a JSON object with this format:
-            {{"skills": ["Python", "React", "Docker"]}}
-
             Description:
             {description}
-            """)
+            """, text_format=Skill,)
 
     except openai.APIError as e:
         return handle_openai_error(e)
     else:
-        try:
-            return json.loads(response.output_text)["skills"]
-        except JSONDecodeError as e:
-            print(f"Failed to decode OpenAI response as JSON: {e}")
-            return []
+        return response.output_parsed.skills
 
 
 def extract_skills_from_jobs(jobs_list: list) -> list[list[str]]:
