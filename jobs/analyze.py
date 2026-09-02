@@ -7,6 +7,7 @@ from concurrent.futures import ThreadPoolExecutor
 from dotenv import load_dotenv
 from jobs.constants import TECH_TAGS
 from jobs.exceptions import handle_openai_error
+from jobs.normalization import normalize_skills
 
 load_dotenv()
 
@@ -49,8 +50,8 @@ def extract_skills(description: str) -> list[str]:
 
 def extract_skills_from_jobs(jobs_list: list) -> list[list[str]]:
     with ThreadPoolExecutor(max_workers=4) as executor:
-        results = executor.map(lambda job: extract_skills(
-            job["description"]), jobs_list)
+        results = executor.map(lambda job: normalize_skills(extract_skills(
+            job["description"])), jobs_list)
 
     return list(results)
 
