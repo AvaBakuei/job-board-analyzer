@@ -26,7 +26,12 @@ def filter_by_it_category(jobs_list: list) -> list:
 def extract_skills(description: str) -> list[str]:
     try:
         response = client.responses.create(model="gpt-5.6-luna", input=f"""
-            Extract technical skills from the job description, regardless of the language.
+            Extract technical skills from the job description, regardless of the language of the job description.
+
+            Include only specific technologies, tools, programming languages, frameworks, libraries, databases, cloud platforms, or DevOps tools.
+
+            Do not include broad technical areas or concepts, human languages, soft skills,
+            job responsibilities, job titles, or general business skills.
 
             Return a JSON object with this format:
             {{"skills": ["Python", "React", "Docker"]}}
