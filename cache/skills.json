@@ -1,0 +1,105 @@
+{
+    "7db04e4914fb6a61641b22841aa972ff64c98e137dc9ac50c8cb085744fff46f": [
+        "Artificial intelligence (AI)",
+        "Cloud computing"
+    ],
+    "e888bbfb63505d71ed69d57283801b47a49483b5679d609a0e780941a0ddbe22": [
+        "Kotlin",
+        "Java",
+        "Spring Boot",
+        "React",
+        "TypeScript",
+        "AWS",
+        "Amazon RDS",
+        "GitHub Actions"
+    ],
+    "c81c7317f7b54c7ea19a8f14e8871b19bd2d3d27329715388a57a994a6efbbb3": [
+        "Python",
+        "Go",
+        "TypeScript",
+        "Ruby",
+        "GitLab CI/CD",
+        "SAST",
+        "SCA",
+        "DAST",
+        "Secrets scanning",
+        "Google Cloud Platform (GCP)",
+        "IAM",
+        "Google Cloud Armor",
+        "Web Application Firewall (WAF)",
+        "Kubernetes",
+        "OAuth 2.0",
+        "JWT"
+    ],
+    "fd46e956c621852d9a84b17a602384a5ed8bc356e85811c17627ece1e2116373": [
+        "Microsoft Azure",
+        "Microsoft 365",
+        "Windows Server",
+        "Active Directory",
+        "Hyper-V",
+        "VMware"
+    ],
+    "fea99f9b1fdec540e0094ec496b2cf7d913a4fdb392135e4aa709ed46cca65e9": [
+        "Power BI",
+        "ERP systems",
+        "Microsoft Office"
+    ],
+    "ded81f971e9593fec22adc0bc32a0da50d157da7978088cc53b12a2d1b271ecb": [
+        "Python",
+        "C++",
+        "OCR",
+        "APIs"
+    ],
+    "d17596fbaf98e7befb0199d1f5a84d1711745bffc9ee11bf52381b9c986e5d95": [
+        "Diamond ERP",
+        "SAP"
+    ],
+    "666e162301599bfe63dc206a69bf3fe9d1f0d2d704def2f893449d13fa895eed": [
+        "Python",
+        "SQL",
+        "OpenAI",
+        "Anthropic",
+        "Gemini",
+        "Mistral",
+        "LangGraph",
+        "LangChain",
+        "LlamaIndex",
+        "MCP",
+        "Vector Databases",
+        "AWS",
+        "GCP",
+        "Docker",
+        "Kubernetes"
+    ],
+    "185fe4f8e3a4036d75f2f0c4447541651ef98f4539dfb436b2fca75cfd090697": [
+        "Python",
+        "FastAPI",
+        "Pydantic",
+        "PostgreSQL",
+        "AWS",
+        "Rust"
+    ],
+    "5314b8a518c79113f6b9c66cda8ed2339241cf44768cbd3ed0bcab49bd52c3e4": [
+        "Python",
+        "AWS",
+        "Pulumi",
+        "Amazon ECS",
+        "AWS Lambda",
+        "PostgreSQL",
+        "Amazon RDS",
+        "Amazon Aurora",
+        "GitLab CI/CD",
+        "Apache Airflow",
+        "Amazon MWAA",
+        "Grafana Cloud",
+        "Amazon CloudWatch",
+        "Sentry",
+        "Amazon Cognito",
+        "AWS IAM",
+        "Amazon API Gateway",
+        "Application Load Balancer (ALB)",
+        "AWS Amplify",
+        "Git",
+        "SQL"
+    ]
+}
