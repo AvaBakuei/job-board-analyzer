@@ -18,7 +18,10 @@ def main():
 
     skill_counts = count_skills(skills_by_job)
 
-    print(skill_counts.most_common())
+    print("Top 10 Technical Skills")
+    print("-" * 50)
+    for skill, count in skill_counts.most_common(10):
+        print(f"{skill}: {count}")
 
 
 if __name__ == "__main__":
