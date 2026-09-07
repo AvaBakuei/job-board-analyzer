@@ -15,7 +15,6 @@ def main():
     display_jobs(tech_category, title="Filter by IT Category", show_tags=True)
 
     skills_by_job = extract_skills_from_jobs(tech_category)
-
     skill_counts = count_skills(skills_by_job)
 
     print("Top 10 Technical Skills")
