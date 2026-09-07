@@ -10,9 +10,18 @@ mapping_skills = {
 
 def normalize_skills(skills: list[str]):
     normal_skills = []
+    unique_skills = []
+
     for skill in skills:
-        if skill in mapping_skills:
-            normal_skills.append(mapping_skills[skill])
+        for key, value in mapping_skills.items():
+            if key.casefold() == skill.casefold():
+                normal_skills.append(value)
+                break
         else:
             normal_skills.append(skill)
-    return normal_skills
+
+    for skill in normal_skills:
+        if not any(skill.casefold() == existing.casefold() for existing in unique_skills):
+            unique_skills.append(skill)
+
+    return unique_skills
