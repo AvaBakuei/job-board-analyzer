@@ -1,5 +1,6 @@
 import os
 import openai
+import time
 from openai import OpenAI
 from pydantic import BaseModel
 from collections import Counter
@@ -28,24 +29,31 @@ def filter_by_it_category(jobs_list: list) -> list:
 
 
 def extract_skills(description: str) -> list[str]:
+    for attempt in range(3):
+        try:
+            response = client.responses.parse(model="gpt-5.6-luna", input=f"""
+                Extract technical skills from the job description, regardless of the language of the job description.
+    
+                Include only specific technologies, tools, programming languages, frameworks, libraries, databases, cloud platforms, or DevOps tools.
+    
+                Do not include broad technical areas or concepts, human languages, soft skills,
+                job responsibilities, job titles, or general business skills.
+    
+                Description:
+                {description}
+                """, text_format=Skill,)
 
-    try:
-        response = client.responses.parse(model="gpt-5.6-luna", input=f"""
-            Extract technical skills from the job description, regardless of the language of the job description.
+        except openai.APIError as e:
+            if isinstance(e, openai.APITimeoutError) or isinstance(e, openai.APIConnectionError) or isinstance(e, openai.InternalServerError):
+                if attempt < 2:
+                    time.sleep(1)
+                continue
+            else:
+                return handle_openai_error(e)
 
-            Include only specific technologies, tools, programming languages, frameworks, libraries, databases, cloud platforms, or DevOps tools.
-
-            Do not include broad technical areas or concepts, human languages, soft skills,
-            job responsibilities, job titles, or general business skills.
-
-            Description:
-            {description}
-            """, text_format=Skill,)
-
-    except openai.APIError as e:
-        return handle_openai_error(e)
-    else:
-        return response.output_parsed.skills
+        else:
+            return response.output_parsed.skills
+    return []
 
 
 def extract_skills_from_jobs(jobs_list: list) -> list[list[str]]:
